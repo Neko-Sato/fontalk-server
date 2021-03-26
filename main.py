@@ -1,15 +1,11 @@
 from flask import Flask
-import json
-import pyrebase
-import os
+from flask_firebase_admin import FirebaseAdmin
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.urandom(24)
+app.config["FIREBASE_ADMIN_CREDENTIAL"] = \
+    FirebaseAdmin.credentials.Certificate("serviceAccountKey.json")
 
-with open("firebaseConfig.json") as f:
-  config = json.loads(f.read())
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
+firebase = FirebaseAdmin(app)
 
 import database
 import route

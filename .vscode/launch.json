@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "server run",
+            "type": "python",
+            "request": "launch",
+            "program": "run.py",
+        },
+
+        {
             "name": "Python: Flask",
             "type": "python",
             "request": "launch",
@@ -17,7 +24,8 @@
             "args": [
                 "run",
                 "--no-debugger",
-                "--port", "5000"
+                "--port",
+                "5000"
             ],
             "jinja": true
         }

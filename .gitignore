@@ -1,3 +1,5 @@
 /venv/
+/test_client/
 __pycache__/
 *.pyc
+serviceAccountKey.json
