@@ -1,21 +1,18 @@
 from flask import request, session, jsonify, redirect, url_for, make_response
 from main import app, firebase
-from models import User
-import json
+from application import test
+
 
 @app.route("/", methods=["POST"])
 @firebase.jwt_required
 def index():
-    user_id = request.jwt_payload["user_id"]
-    temp = {\
-        "message": "your userid is {}".format(user_id)
-    }
-    return jsonify(temp)
+    response = test.test(request.jwt_payload["user_id"])
+    return jsonify(response)
 
 #About talks
 @app.route("/talks/get_list", methods=["POST"])
 @firebase.jwt_required
-def index():
+def __talks__get_list():
     user_id = request.jwt_payload["user_id"]
     #try:
     #    データベースからuser_idが同じなユーザーを習得する
@@ -27,7 +24,7 @@ def index():
 #About User
 @app.route("/user/create", methods=["POST"])
 @firebase.jwt_required
-def index():
+def __user__cteate():
     user_id = request.jwt_payload["user_id"]
 　　#データベースに登録
     #うまくいったよと返信
