@@ -12,6 +12,28 @@ def index():
     }
     return jsonify(temp)
 
+#About talks
+@app.route("/talks/get_list", methods=["POST"])
+@firebase.jwt_required
+def index():
+    user_id = request.jwt_payload["user_id"]
+    #try:
+    #    データベースからuser_idが同じなユーザーを習得する
+    #Exception(んなユーザーはいません):
+    #   return errorになっちゃったよでーたくれよ～
+    #    そのユーザーがいるtalkのみを習得
+    return jsonify({})
+
+#About User
+@app.route("/user/create", methods=["POST"])
+@firebase.jwt_required
+def index():
+    user_id = request.jwt_payload["user_id"]
+　　#データベースに登録
+    #うまくいったよと返信
+    return jsonify({})
+
+#-------------------------------------------------------------------------------------
 @app.route("/set_user_icon", methods=["POST"])
 @firebase.jwt_required
 def set_user_icon():
