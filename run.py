@@ -6,7 +6,7 @@ if __name__ == '__main__':
     #context.load_cert_chain('server.crt', 'server.key')
 
     app.run(\
-        debug=True, \
+        debug=False, \
         #ssl_context=context, \
         host='localhost', \
         port=5000, \
