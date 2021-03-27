@@ -1,48 +1,30 @@
-from flask import request, session, jsonify, redirect, url_for, make_response
+from flask import request, make_response
 from main import app, firebase
-from application import test
-
+from application import *
+import json
 
 @app.route("/", methods=["POST"])
 @firebase.jwt_required
 def index():
-    response = test.test(request.jwt_payload["user_id"])
-    return jsonify(response)
+  response = make_response()
+  response.data = json.dumps(test.test(request.jwt_payload["user_id"]))
+  response.mimetype = 'application/json'
+  return response
 
-#About talks
+#About Talks
 @app.route("/talks/get_list", methods=["POST"])
 @firebase.jwt_required
-def __talks__get_list():
-    user_id = request.jwt_payload["user_id"]
-    #try:
-    #    データベースからuser_idが同じなユーザーを習得する
-    #Exception(んなユーザーはいません):
-    #   return errorになっちゃったよでーたくれよ～
-    #    そのユーザーがいるtalkのみを習得
-    return jsonify({})
+def talks_get_list():
+  response = make_response()
+  response.data = json.dumps(talks.get_list(request.jwt_payload["user_id"]))
+  response.mimetype = 'application/json'
+  return response
 
 #About User
 @app.route("/user/create", methods=["POST"])
 @firebase.jwt_required
-def __user__cteate():
-    user_id = request.jwt_payload["user_id"]
-　　#データベースに登録
-    #うまくいったよと返信
-    return jsonify({})
-
-#-------------------------------------------------------------------------------------
-@app.route("/set_user_icon", methods=["POST"])
-@firebase.jwt_required
-def set_user_icon():
-    image = request.files['image'].stream.read()
-    return ''
-
-@app.route("/get_user_icon/<string:user_id>", methods=["GET"])
-@firebase.jwt_required
-def get_user_icon(user_id):
-    if user_id == '':
-      user_id = request.jwt_payload["user_id"]
-    response = make_response()
-    response.data = ''
-    response.mimetype = 'image/png'
-    return response
+def user_create():
+  response = make_response()
+  response.data = user.create(**json.loads(request.data.decode('utf-8')))
+  response.mimetype = 'application/json'
+  return response

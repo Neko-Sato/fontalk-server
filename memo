@@ -17,3 +17,24 @@ Login
 
 APIは欲しがっている情報だけ通信する
 通知だとかこっちから教えたいのは全部ファイアベースにまかせる
+
+
+
+
+
+#-------------------------------------------------------------------------------------
+@app.route("/set_user_icon", methods=["POST"])
+@firebase.jwt_required
+def set_user_icon():
+    image = request.files['image'].stream.read()
+    return ''
+
+@app.route("/get_user_icon/<string:user_id>", methods=["GET"])
+@firebase.jwt_required
+def get_user_icon(user_id):
+    if user_id == '':
+      user_id = request.jwt_payload["user_id"]
+    response = make_response()
+    response.data = ''
+    response.mimetype = 'image/png'
+    return response
