@@ -41,11 +41,7 @@ temp()
 del temp
 
 #-----
-xhr = new XMLHttpRequest;
-xhr.open('post', "/", true);
-xhr.setRequestHeader('Authorization', 'Bearer token');
-xhr.setRequestHeader('Content-Type', 'text/html');
-xhr.send(JSON.stringify({}));
+
 
 
 

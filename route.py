@@ -6,6 +6,7 @@ import json
 @app.route("/", methods=["POST"])
 @firebase.jwt_required
 def index():
+  print(request.data)
   response = make_response()
   response.data = json.dumps(test.test(request.jwt_payload["user_id"]))
   response.mimetype = 'application/json'
