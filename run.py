@@ -1,6 +1,8 @@
 from fontalk import app, db
 import argparse
 
+db.create_all() 
+
 class MyFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.MetavarTypeHelpFormatter):
     pass
 
@@ -58,4 +60,4 @@ if __name__ == '__main__':
   #context.load_cert_chain('server.crt', 'server.key')
   #options.update(ssl_context=context)
 
-  app.run(**args, **options)
+  #app.run(**args, **options)
