@@ -1,6 +1,6 @@
 from flask import request, make_response
-from main import app, firebase
-from application import *
+from . import app, firebase
+from .application import *
 import json
 
 @app.route("/", methods=["POST"])

@@ -1,6 +1,5 @@
-from main import firebase
-from models import *
-import json
+from . import firebase
+from .models import *
 
 class no_data:
   @classmethod

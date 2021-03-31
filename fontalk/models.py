@@ -1,4 +1,4 @@
-from main import db
+from . import db
 
 class User(db.Model):
   id = db.Column(db.Text, primary_key=True, nullable=False)
@@ -7,4 +7,3 @@ class User(db.Model):
 
   def __repr__(self):
     return '<User {}>'.format(self.id)
-

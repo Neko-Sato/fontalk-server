@@ -1,4 +1,4 @@
-from main import app
+from fontalk import app, db
 import argparse
 
 class MyFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.MetavarTypeHelpFormatter):
