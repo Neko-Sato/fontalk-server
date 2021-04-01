@@ -14,6 +14,9 @@ def index():
   response.mimetype = 'application/json'
   return response
 
+#おつかいメモ
+#お米　玉ねぎ　ジャガイモ　オレンジ－ス　そうめん
+
 ##About Talk
 #@app.route("/talk/get_list", methods=["POST"])
 #@firebase.jwt_required
