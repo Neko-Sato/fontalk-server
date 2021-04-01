@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(
     2021年度 新宿山吹高校 情報科2部7組 清水 一聡\
     このプログラムは 課題研究②ｱ の作品になります。\
   ',
-  epilog='Copyright © 20021 Hisatshi Shimizu All Rights Reserved.',
+  epilog='End',
   add_help=True,
 )
 parser.add_argument(
