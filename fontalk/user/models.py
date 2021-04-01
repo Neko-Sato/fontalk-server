@@ -1,9 +1,12 @@
 from . import db
+from ..talk.models import Member, Message
 
 class User(db.Model):
   __id = db.Column('id', db.VARCHAR(128), primary_key=True)
-  __name = db.Column('name', db.VARCHAR(20))
+  __name = db.Column('name', db.VARCHAR(20), nullable=False)
   __image = db.Column('image', db.LargeBinary)
+  __member = db.relationship("member", secondary=Member, backref="user")
+  __message = db.relationship("message", secondary=Message, backref="user")
   def __init__(self, id, name=None, image=None):
     self.__id = id
     self.__name = name
