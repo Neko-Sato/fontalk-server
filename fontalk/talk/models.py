@@ -5,9 +5,11 @@ class Member(db.Model):
   __id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
   __talk = db.Column('talk', db.Integer, db.ForeignKey('talk.id'), nullable=False)
   __user = db.Column('user', db.VARCHAR(128), db.ForeignKey('user.id'), nullable=False)
-  def __init__(self, talk, user):
+  __is_participated = db.Column('is_participated', db.Boolean, nullable=False, default=False)
+  def __init__(self, talk, user, is_participated=False):
     self.__talk = talk
     self.__user = user
+    self.__is_participated = is_participated
   @property
   def id(self):
     return self.__id
@@ -17,6 +19,12 @@ class Member(db.Model):
   @property
   def user(self):
     return self.__user
+  @property
+  def is_participated(self):
+    return self.__is_participated
+  @is_participated.setter
+  def is_participated(self, value):
+    self.__is_participated = value
   def __repr__(self):
     return '<member {}>'.format(self.id)
 

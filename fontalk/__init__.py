@@ -1,15 +1,16 @@
-from flask import Flask
-app = Flask(__name__)
+from .fontalk import app
+from .fontalk import firebase
+from .fontalk import db
+from .fontalk import no_data
+from .fontalk import dict_molding
+from .fontalk import get_path
 
-from .config import firebase, db
-
-def get_path(name):
-  return ''.join(map(lambda x: '/' + x, name.split('.')[1:]))
 path = get_path(__name__)
 
 from . import models
 from . import processes
-from . import route
+from . import routes
+from . import erorr_handlers
 
 from . import user
 from . import talk

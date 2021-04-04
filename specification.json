@@ -1,0 +1,29 @@
+{
+    "(/user/create [POST])" : { 
+        "name" : "(required) str or null", //ユーザーの名前
+        "image" : "(optional) bytes or null", //ユーザーのプロフィール画像
+    }, 
+    "(user/update [POST])" : {
+        "name" : "(optional) str or null", //ユーザーの名前
+        "image" : "(optional) bytes or null", //ユーザーのプロフィール画像
+    },
+    "(talk/create [POST])" : {
+        "name" : "(required) str or null", //トークの名前
+        "image" : "(optional) bytes or null", //トークの画像
+        "users" : "(optional) list[str]", //招待するユーザー達idリスト
+    },
+    "(talk/update [POST])" : {
+        "name" : "(optional) str or null", //トークの名前
+        "image" : "(optional) bytes or null", //トークの画像
+    },
+    "(talk/invitation [POST])" : {
+        "talk" : "(required) integer", //トークのid
+        "users" : "(optional) list[str]", //招待するユーザー達idリスト
+    },
+    "(talk/participate [POST])" : {
+        "talk" : "(required) integer", //トークのid
+    },
+    "(talk/withdrawal [POST])" : {
+        "talk" : "(required) integer", //トークのid
+    },
+}

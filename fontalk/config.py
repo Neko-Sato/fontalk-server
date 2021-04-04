@@ -1,4 +1,4 @@
-from . import app
+from .fontalk import app
 from flask_firebase_admin import FirebaseAdmin
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
