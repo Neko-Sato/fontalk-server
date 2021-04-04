@@ -1,27 +1,25 @@
 from flask import Flask
 app = Flask('fontalk')
 
-from .config import firebase, db
+from flask_firebase_admin import FirebaseAdmin
+from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
-class no_data(object):
-  @classmethod
-  def Q(cls, other):
-    return other is cls
+app.config["FIREBASE_ADMIN_CREDENTIAL"] = \
+  FirebaseAdmin.credentials.Certificate("serviceAccountKey.json")
 
-def dict_molding(data, models):
-  res = {}
-  for key, value in models.items():
-    if not hasattr(data, key):
-      if value[0]:
-        raise Exception
-      continue
-    for x in value[1]:
-      if type(data[key]) == x:
-        break
-    else:
-      raise Exception
-    res[key] = data[key]
-  return res
+#app.config['SQLALCHEMY_DATABASE_URI'] = \
+#  'sqlite:///../database.sqlite3'
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+  'mysql+pymysql://{user}:{password}@{host}/{db_name}?charset=utf8'.format(
+    user='root', \
+    password='fontalk@pass!350350', \
+    host='localhost', \
+    db_name='fontalk_database', \
+  )
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = \
+  False
 
-def get_path(name):
-  return ''.join(map(lambda x: '/' + x, name.split('.')[1:]))
+CORS(app)
+firebase = FirebaseAdmin(app)
+db = SQLAlchemy(app)

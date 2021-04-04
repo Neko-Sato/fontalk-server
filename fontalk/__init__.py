@@ -1,15 +1,10 @@
 from .fontalk import app
 from .fontalk import firebase
 from .fontalk import db
-from .fontalk import no_data
-from .fontalk import dict_molding
-from .fontalk import get_path
+from .functions import no_data
+from .functions import dict_molding
+from .functions import get_path
 
-path = get_path(__name__)
-
-from . import models
-from . import processes
-from . import routes
 from . import erorr_handlers
 
 from . import user
