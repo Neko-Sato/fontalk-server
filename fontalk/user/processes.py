@@ -2,15 +2,11 @@ from .models import *
 from . import no_data
 
 def create(user_id, name, image):
-  if no_data.Q(name):
-    return {'message': '必須項目[name]がありません'}
-  if no_data.Q(image):
-    image = None
   if User.query.get(user_id) == None:
     user = User(\
       id=user_id, \
-      name=name, \
-      image=image, \
+      name=no_data.W(name, None), \
+      image=no_data.W(image, None), \
     )
     db.session.add(user)
     db.session.commit()

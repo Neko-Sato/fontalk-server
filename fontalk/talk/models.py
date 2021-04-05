@@ -72,7 +72,7 @@ class Talk(db.Model):
   __image = db.Column('image', db.LargeBinary)
   __member = db.relationship("member", secondary=Member, backref="talk")
   __message = db.relationship("message", secondary=Message, backref="talk")
-  def __init__(self, name=None, image=None):
+  def __init__(self, user_id, name=None, image=None, users=[]):
     self.__name = name
     self.__image = image
   @property
@@ -89,6 +89,6 @@ class Talk(db.Model):
     return self.__image if not self.__image == None else 'default'
   @image.setter
   def image(self, value):
-    self.__image = value  
+    self.__image = value
   def __repr__(self):
     return '<talk {}>'.format(self.id)

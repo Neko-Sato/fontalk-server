@@ -20,7 +20,7 @@
         "talk" : "(required) integer", //トークのid
         "users" : "(optional) list[str]", //招待するユーザー達idリスト
     },
-    "(talk/participate [POST])" : {
+    "(talk/member [POST])" : {
         "talk" : "(required) integer", //トークのid
     },
     "(talk/withdrawal [POST])" : {
