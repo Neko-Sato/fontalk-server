@@ -33,9 +33,10 @@ def update():
   })
   response = make_response()
   response.data = json.dumps(\
-    processes.create(\
+    processes.update(\
       request.jwt_payload["user_id"], \
-      data, \
+      name=data['name'], \
+      image=data['image'], \
     )\
   )
   response.mimetype = 'application/json'

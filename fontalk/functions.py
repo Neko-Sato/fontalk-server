@@ -11,7 +11,7 @@ class no_data(object):
 def dict_molding(data, models):
   res = {}
   for key, value in models.items():
-    if not hasattr(data, key):
+    if key not in data :
       if value[0]:
         raise InvalidUsage('Required item {} does not exist'.format(key))
       else:

@@ -70,8 +70,8 @@ class Talk(db.Model):
   __id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
   __name = db.Column('name', db.VARCHAR(20), nullable=False)
   __image = db.Column('image', db.LargeBinary)
-  __member = db.relationship("member", secondary=Member, backref="talk")
-  __message = db.relationship("message", secondary=Message, backref="talk")
+  __member = db.relationship("Member", backref="talk", lazy=True)
+  __message = db.relationship("Message", backref="talk", lazy=True)
   def __init__(self, user_id, name=None, image=None, users=[]):
     self.__name = name
     self.__image = image
