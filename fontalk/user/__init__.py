@@ -2,7 +2,6 @@ from .. import app
 from .. import firebase
 from .. import db
 from .. import InvalidUsage
-from .. import no_data
 from .. import dict_molding
 from .. import get_path
 
