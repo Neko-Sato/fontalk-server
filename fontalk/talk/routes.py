@@ -3,6 +3,6 @@ from . import app
 from . import firebase
 from . import path
 from . import processes
-from . import dict_molding
+from . import functions
 import json
 

@@ -1,5 +1,4 @@
 from . import db
-from fontalk import user
 
 def randam_string(n):
   from string import digits, ascii_lowercase, ascii_uppercase

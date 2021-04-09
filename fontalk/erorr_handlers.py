@@ -1,5 +1,6 @@
 from flask import make_response
 from werkzeug.exceptions import HTTPException
+from sqlalchemy.exc import *
 from .fontalk import app
 import json
 

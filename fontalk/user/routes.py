@@ -3,7 +3,7 @@ from . import app
 from . import firebase
 from . import path
 from . import processes
-from . import dict_molding
+from . import functions
 import json
 
 @app.route(path + "/create", methods=["POST"])
@@ -14,7 +14,7 @@ def create():
   response.data = json.dumps(\
     processes.create(\
       firebase_id=request.jwt_payload["user_id"], \
-      **dict_molding(data, {\
+      **functions.dict_molding(data, {\
         'user_id': (False, ['str', 'NoneType']), \
         'name': (False, ['str', 'NoneType']), \
         'image': (False, ['bytes', 'NoneType']), \
@@ -32,7 +32,7 @@ def update():
   response.data = json.dumps(\
     processes.update(\
       firebase_id=request.jwt_payload["user_id"], \
-      **dict_molding(data, {\
+      **functions.dict_molding(data, {\
         'user_id': (False, ['str', 'NoneType']), \
         'name': (False, ['str', 'NoneType']), \
         'image': (False, ['bytes', 'NoneType']), \
@@ -50,7 +50,7 @@ def follow():
   response.data = json.dumps(\
     processes.follow(\
       firebase_id=request.jwt_payload["user_id"], \
-      **dict_molding(data, {\
+      **functions.dict_molding(data, {\
         'follow_id': (True, ['str']), \
       })\
     )\
@@ -66,7 +66,7 @@ def unfollow():
   response.data = json.dumps(\
     processes.unfollow(\
       firebase_id=request.jwt_payload["user_id"], \
-      **dict_molding(data, {\
+      **functions.dict_molding(data, {\
         'follow_id': (True, ['str']), \
       })\
     )\
