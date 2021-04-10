@@ -8,7 +8,7 @@ import json
 
 @app.route(path + "/create", methods=["POST"])
 @firebase.jwt_required
-def create():
+def user_create():
   data = json.loads(request.data.decode('utf-8'))
   response = make_response()
   response.data = json.dumps(\
@@ -26,7 +26,7 @@ def create():
 
 @app.route(path +"/update", methods=["POST"])
 @firebase.jwt_required
-def update():
+def user_update():
   data = json.loads(request.data.decode('utf-8'))
   response = make_response()
   response.data = json.dumps(\
@@ -44,7 +44,7 @@ def update():
 
 @app.route(path +"/follow", methods=["POST"])
 @firebase.jwt_required
-def follow():
+def user_follow():
   data = json.loads(request.data.decode('utf-8'))
   response = make_response()
   response.data = json.dumps(\
@@ -60,7 +60,7 @@ def follow():
 
 @app.route(path +"/unfollow", methods=["POST"])
 @firebase.jwt_required
-def unfollow():
+def user_unfollow():
   data = json.loads(request.data.decode('utf-8'))
   response = make_response()
   response.data = json.dumps(\

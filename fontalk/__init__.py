@@ -6,4 +6,4 @@ from . import erorr_handlers
 from . import functions
 
 from . import user
-#from . import talk
+from . import talk

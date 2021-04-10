@@ -3,10 +3,10 @@ from datetime import datetime
 
 class Talk(db.Model):
   _id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
-  _name = db.Column('name', db.VARCHAR(20), nullable=False)
+  _name = db.Column('name', db.VARCHAR(20))
   _image = db.Column('image', db.LargeBinary)
-  _member = db.relationship("Member", backref="talk", foreign_keys='Member._talk', lazy=True)
-  _message = db.relationship("Message", backref="talk", foreign_keys='Message._talk', lazy=True)
+  _member = db.relationship("Member", backref="talk", foreign_keys='Member._talk', cascade='delete', lazy=True)
+  _message = db.relationship("Message", backref="talk", foreign_keys='Message._talk', cascade='delete', lazy=True)
   def __init__(self, name=None, image=None):
     self._name = name
     self._image = image
@@ -31,7 +31,7 @@ class Talk(db.Model):
 class Member(db.Model):
   _id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
   _talk = db.Column('talk', db.Integer, db.ForeignKey('talk.id'), nullable=False)
-  _user = db.Column('user', db.VARCHAR(128), db.ForeignKey('user.id'), nullable=False)
+  _user = db.Column('user', db.Integer, db.ForeignKey('user.id'), nullable=False)
   _is_participated = db.Column('is_participated', db.Boolean, nullable=False, default=False)
   def __init__(self, talk, user, is_participated=False):
     self._talk = talk
@@ -58,7 +58,7 @@ class Member(db.Model):
 class Message(db.Model):
   _id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
   _talk = db.Column('talk', db.Integer, db.ForeignKey('talk.id'), nullable=False)
-  _user = db.Column('user', db.VARCHAR(128), db.ForeignKey('user.id'), nullable=False)
+  _user = db.Column('user', db.Integer, db.ForeignKey('user.id'), nullable=False)
   _message = db.Column('message', db.TEXT, nullable=False)
   _is_binary = db.Column('is_binary', db.Boolean, nullable=False, default=False)
   _binary = db.Column('binary', db.LargeBinary, default=None)

@@ -36,7 +36,7 @@ def follow(firebase_id, follow_id):
     follow = User.query.filter(User._user_id==follow_id).one()
   except erorr_handlers.NoResultFound:
     raise erorr_handlers.InvalidUsage('存在しないユーザーです')
-  if Follow.query.filter(Follow.user==user.id, Follow.follow==follow.id).one_or_none() is not None:
+  if Follow.query.filter(Follow._user==user.id, Follow._follow==follow.id).one_or_none() is not None:
     raise erorr_handlers.InvalidUsage("既にフォロー済みです")
   follow = Follow(user=user.id, follow=follow.id)
   db.session.add(follow)
@@ -45,12 +45,12 @@ def follow(firebase_id, follow_id):
 
 def unfollow(firebase_id, follow_id):
   try:
-    user = User.query.filter(User.firebase_id==firebase_id).one()
-    followed = User.query.filter(User.user_id==follow_id).one()
+    user = User.query.filter(User._firebase_id==firebase_id).one()
+    followed = User.query.filter(User._user_id==follow_id).one()
   except erorr_handlers.NoResultFound:
     raise erorr_handlers.InvalidUsage('存在しないユーザーです')
   try:
-    follow = Follow.query.filter(Follow.user==user.id, Follow.follow==followed.id).one()
+    follow = Follow.query.filter(Follow._user==user.id, Follow._follow==followed.id).one()
   except erorr_handlers.NoResultFound:
     raise erorr_handlers.InvalidUsage('フォローされていません')  
   db.session.delete(follow)

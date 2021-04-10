@@ -14,6 +14,8 @@ class User(db.Model):
   _image = db.Column('image', db.LargeBinary)
   _follow = db.relationship('Follow', backref='user', foreign_keys='Follow._user', lazy=True)
   _followed = db.relationship('Follow', backref='follow', foreign_keys='Follow._follow', lazy=True)
+  _member = db.relationship('Member', backref='user', foreign_keys='Member._user', lazy=True)
+  _message = db.relationship('Message', backref='user', foreign_keys='Message._user', lazy=True)
   def __init__(self, firebase_id, user_id=None, name=None, image=None):
     self._firebase_id = firebase_id
     self._user_id = user_id if user_id is not None else randam_string(16)
