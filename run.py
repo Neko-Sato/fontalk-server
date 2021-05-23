@@ -53,9 +53,9 @@ if __name__ == '__main__':
   args.setdefault('host')
   args.setdefault('port')
 
-  #import ssl
-  #context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-  #context.load_cert_chain('server.crt', 'server.key')
-  #options.update(ssl_context=context)
+  import ssl
+  context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+  context.load_cert_chain('server.crt', 'server.key')
+  options.update(ssl_context=context)
 
   app.run(**args, **options)

@@ -12,7 +12,7 @@ app.config["FIREBASE_ADMIN_CREDENTIAL"] = \
 #  'sqlite:///../database.sqlite3'
 app.config['SQLALCHEMY_DATABASE_URI'] = \
   'mysql+pymysql://{user}:{password}@{host}/{db_name}?charset=utf8'.format(
-    user='root', \
+    user='fontalk', \
     password='fontalk@pass!350350', \
     host='localhost', \
     db_name='fontalk_database', \
