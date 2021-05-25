@@ -6,6 +6,18 @@ from . import processes
 from . import functions
 import json
 
+@app.route(path + "/is-already-registered", methods=["POST"])
+@firebase.jwt_required
+def is_already_registered():
+  response = make_response()
+  response.data = json.dumps(\
+    processes.is_already_registered(\
+      firebase_id=request.jwt_payload["user_id"], \
+    )\
+  )
+  response.mimetype = 'application/json'
+  return response
+
 @app.route(path + "/create", methods=["POST"])
 @firebase.jwt_required
 def user_create():

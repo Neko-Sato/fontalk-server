@@ -6,8 +6,8 @@ class MyFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.MetavarTypeHe
 
 parser = argparse.ArgumentParser(
   prog='run.py',
-  formatter_class=MyFormatter, 
-  usage='python %(prog)s [options]', 
+  formatter_class=MyFormatter,
+  usage='python %(prog)s [options]',
   description='\
     2021年度 新宿山吹高校 情報科2部7組 清水 一聡\
     このプログラムは 課題研究②ｱ の作品になります。\
@@ -20,7 +20,7 @@ parser.add_argument(
   "--bind",
   dest="address",
   default="localhost:5000",
-  type=str, 
+  type=str,
   help="The hostname:port the app should listen on.",
 )
 parser.add_argument(
@@ -53,9 +53,9 @@ if __name__ == '__main__':
   args.setdefault('host')
   args.setdefault('port')
 
-  import ssl
-  context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-  context.load_cert_chain('server.crt', 'server.key')
-  options.update(ssl_context=context)
+  #import ssl
+  #context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+  #context.load_cert_chain('server.crt', 'server.key')
+  #options.update(ssl_context=context)
 
   app.run(**args, **options)

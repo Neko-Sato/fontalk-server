@@ -1,6 +1,14 @@
 from .models import *
 from . import erorr_handlers
 
+def is_already_registered(firebase_id):
+  try:
+    User.query.filter(User._firebase_id==firebase_id).one()
+    temp = "Already registered"
+  except erorr_handlers.NoResultFound:
+    temp = "Not yet registered"
+  return {"message": temp}
+
 def create(firebase_id, user_id=None, name=None, image=None):
   user = User(\
     firebase_id=firebase_id, \
@@ -52,7 +60,7 @@ def unfollow(firebase_id, follow_id):
   try:
     follow = Follow.query.filter(Follow._user==user.id, Follow._follow==followed.id).one()
   except erorr_handlers.NoResultFound:
-    raise erorr_handlers.InvalidUsage('フォローされていません')  
+    raise erorr_handlers.InvalidUsage('フォローされていません')
   db.session.delete(follow)
   db.session.commit()
   return {"message": "フォロー解除しました"}
