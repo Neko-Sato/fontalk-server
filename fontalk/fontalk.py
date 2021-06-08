@@ -1,25 +1,16 @@
-from flask import Flask
+from .modules import Flask
+from .modules import FirebaseAdmin
+from .modules import SQLAlchemy
+from .modules import CORS
+from .config import config
+from .routing import Routing
+
 app = Flask('fontalk')
 
-from flask_firebase_admin import FirebaseAdmin
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
-
-app.config["FIREBASE_ADMIN_CREDENTIAL"] = \
-  FirebaseAdmin.credentials.Certificate("serviceAccountKey.json")
-
-#app.config['SQLALCHEMY_DATABASE_URI'] = \
-#  'sqlite:///../database.sqlite3'
-app.config['SQLALCHEMY_DATABASE_URI'] = \
-  'mysql+pymysql://{user}:{password}@{host}/{db_name}?charset=utf8'.format(
-    user='fontalk', \
-    password='fontalk@pass!350350', \
-    host='localhost', \
-    db_name='fontalk_database', \
-  )
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = \
-  False
-
+config(app)
 CORS(app)
+
 firebase = FirebaseAdmin(app)
 db = SQLAlchemy(app)
+
+routing = Routing(app)

@@ -1,7 +1,7 @@
 from flask import make_response
 from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import *
-from .fontalk import app
+from fontalk import app
 import json
 
 class InvalidUsage(Exception):
@@ -30,9 +30,7 @@ def handle_invalid_usage(error):
 def handle_exception(e):
   response = make_response()
   response.data = json.dumps({
-    "code": e.code,
-    "name": e.name,
-    "description": e.description,
+    'message': e.name,
   })
   response.content_type = "application/json"
   return response
