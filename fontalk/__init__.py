@@ -5,5 +5,7 @@ from .fontalk import routing
 
 from . import erorr_handlers
 
+from . import models
+
 from .routes import url_map
 app.url_map = url_map
