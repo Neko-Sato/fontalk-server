@@ -1,8 +1,5 @@
-from flask import request, make_response
-import json
+from . import view
 
-def test():
-  response = make_response()
-  response.data = json.dumps({'massage': 'test'})
-  response.mimetype = 'application/json'
-  return response
+class test(view.general_view):
+  def view(self, data, *args, **kwargs):
+      return "fbsb", data

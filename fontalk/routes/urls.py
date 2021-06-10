@@ -1,9 +1,7 @@
-from . import routing
-from . import processes
+from werkzeug.routing import Map, Rule, Submount
+from .processes import test
 
-from . import user
-
-url_map = routing.Map([
-               routing.Rule('/test', methods=None, view_func=processes.test),
-               routing.Submount('/user', user.url_map.iter_rules())
+url_map = Map([
+               Rule('/test', methods=None, endpoint=test.endpoint()),
+               #Submount('/user', user.url_map.iter_rules())
           ])
