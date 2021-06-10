@@ -11,10 +11,15 @@ class general_view:
     cls.app.view_functions[endpoint] = instance.as_view
     return endpoint
   def as_view(self, *args, **kwargs):
-    data = json.loads(request.get_data().decode('utf-8'))
+    try:
+      data = json.loads(request.get_data().decode('utf-8'))
+    except json.decoder.JSONDecodeError:
+      data = {}
     response = make_response()
-    response.data = json.dumps(self.view(data, *args, **kwargs))
+    result = self.view(data, *args, **kwargs)
+    response.data = json.dumps({'message': result[0], 'data': result[1]})
     response.mimetype = 'application/json'
+    print(response.data)
     return response
   def view(self, data, *args, **kwargs):
     return {'massage': 'massage', 'data': 'data'}
