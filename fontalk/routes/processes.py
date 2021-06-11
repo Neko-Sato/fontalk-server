@@ -1,5 +1,5 @@
 from . import view
 
 class test(view.general_view):
-  def view(self, data, *args, **kwargs):
+  def view(self, data):
       return "test", data
