@@ -9,8 +9,3 @@ class InvalidUsage(Exception):
     if status_code is not None:
       self.status_code = status_code
     self.payload = payload
-
-  def to_dict(self):
-    rv = dict(self.payload or ())
-    rv['message'] = self.message
-    return rv
