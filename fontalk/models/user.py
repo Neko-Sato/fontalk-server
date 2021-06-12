@@ -1,11 +1,5 @@
 from . import db
 
-def randam_string(n):
-  from string import digits, ascii_lowercase, ascii_uppercase
-  from random import choice
-  dat = digits + ascii_lowercase + ascii_uppercase + '_'
-  return ''.join([choice(dat) for i in range(n)])
-
 class User(db.Model):
   _id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
   _firebase_id = db.Column('firebase_id', db.VARCHAR(128), unique=True, nullable=False)
@@ -16,11 +10,13 @@ class User(db.Model):
   _followed = db.relationship('Follow', backref='follow', foreign_keys='Follow._follow', lazy=True)
   _member = db.relationship('Member', backref='user', foreign_keys='Member._user', lazy=True)
   _message = db.relationship('Message', backref='user', foreign_keys='Message._user', lazy=True)
-  def __init__(self, firebase_id, user_id=None, name=None, image=None):
+  def __init__(self, firebase_id, user_id, name=None, image=None):
     self._firebase_id = firebase_id
-    self._user_id = user_id if user_id is not None else randam_string(16)
+    self._user_id = user_id
     self._name = name
     self._image = image
+    db.session.add(self)
+    db.session.commit()
   @property
   def id(self):
     return self._id

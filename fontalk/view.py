@@ -1,3 +1,4 @@
+from flask_cors import extension
 from . import app
 from flask import request, make_response
 import json
@@ -27,6 +28,7 @@ class general_view:
     return 'massage', None
 
 class error_viwe(general_view):
+  exception=Exception
   def as_view(self, error, *args, **kwargs):
     response = make_response()
     result = self.view(error, *args, **kwargs)
