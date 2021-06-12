@@ -11,6 +11,6 @@ class error_Map(list):
     return error_handler_spec
 
 error_handler_spec = error_Map([
-                                     handle_invalid_usage,
-                                     handle_exception,
+                                handle_invalid_usage,
+                                handle_exception,
                      ]).to_dict()
