@@ -1,21 +1,22 @@
 from . import db
+from . import firebase
 
 class User(db.Model):
   _id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
   _firebase_id = db.Column('firebase_id', db.VARCHAR(128), unique=True, nullable=False)
-  _user_id = db.Column('user_id', db.VARCHAR(16), unique=True, nullable=False)
+  _user_id = db.Column('user_id', db.VARCHAR(16), unique=True)
   _name = db.Column('name', db.VARCHAR(20))
   _image = db.Column('image', db.LargeBinary)
   _follow = db.relationship('Follow', backref='user', foreign_keys='Follow._user', lazy=True)
   _followed = db.relationship('Follow', backref='follow', foreign_keys='Follow._follow', lazy=True)
   _member = db.relationship('Member', backref='user', foreign_keys='Member._user', lazy=True)
   _message = db.relationship('Message', backref='user', foreign_keys='Message._user', lazy=True)
-  def __init__(self, firebase_id, user_id, name=None, image=None):
+  def __init__(self, firebase_id):
     self._firebase_id = firebase_id
-    self._user_id = user_id
-    self._name = name
-    self._image = image
     db.session.add(self)
+    db.session.commit()
+  def delete(self):
+    db.session.delete(self)
     db.session.commit()
   @property
   def id(self):
@@ -37,6 +38,7 @@ class User(db.Model):
   def name(self, name):
     if name is not None:
       self._name = name
+      firebase.auth.update_user(self.firebase_id, display_name=self.name)
   @property
   def image(self):
     return self._image if self._image is not None else 'default'

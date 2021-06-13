@@ -1,5 +1,6 @@
 #input
 from .. import db
+from .. import firebase
 
 #output
 from . import user
