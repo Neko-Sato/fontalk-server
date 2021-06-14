@@ -11,8 +11,11 @@ class User(db.Model):
   _followed = db.relationship('Follow', backref='follow', foreign_keys='Follow._follow', lazy=True)
   _member = db.relationship('Member', backref='user', foreign_keys='Member._user', lazy=True)
   _message = db.relationship('Message', backref='user', foreign_keys='Message._user', lazy=True)
-  def __init__(self, firebase_id):
+  def __init__(self, firebase_id, user_id, name, image):
     self._firebase_id = firebase_id
+    self.user_id = user_id
+    self.name = name
+    self.image = image
     db.session.add(self)
     db.session.commit()
   def delete(self):

@@ -1,5 +1,6 @@
 from werkzeug.exceptions import *
 from sqlalchemy.exc import *
+from sqlalchemy.orm.exc import *
 
 class InvalidUsage(Exception):
   status_code = 400

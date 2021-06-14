@@ -27,8 +27,11 @@ class create(view.firebase_view):
 
 class delete(view.firebase_view):
   def view(self, data, firebase_id):
-    models.user.User.query.filter(\
+    try:
+      models.user.User.query.filter(\
       models.user.User._firebase_id==firebase_id).one().delete()
+    except exceptions.NoResultFound:
+      exceptions.InvalidUsage('User not found.')
     return 'Successfully delete account', None
 
 class is_available_user_id(view.firebase_view):
