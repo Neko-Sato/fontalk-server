@@ -1,4 +1,5 @@
 from . import db
+from . import exceptions
 from datetime import datetime
 
 class Talk(db.Model):
@@ -54,6 +55,27 @@ class Member(db.Model):
     self._is_participated = value
   def __repr__(self):
     return '<member {}>'.format(self.id)
+  @classmethod
+  def from_user_id(cls, user_id):
+    return cls.query.filter(cls._user==user_id)
+  @classmethod
+  def from_talk_id(cls, talk_id):
+    return cls.query.filter(cls._talk==talk_id)
+  def have_authority(self):
+    if not self.is_participated:
+      exceptions.InvalidUsage('You don\'t have clearance.')
+  @classmethod
+  def from_user_id_and_talk_id(cls, user_id, talk_id):
+    return cls.query.filter(\
+            cls._talk==talk_id, \
+            cls._user_==user_id, \
+          ).one_or_none()
+  @classmethod
+  def from_user_id_list_and_talk_id(cls, user_ids, talk_id):
+    return cls.query.filter(\
+            cls._talk==talk_id, \
+            cls._user_.in_(user_ids), \
+          )
 
 class Message(db.Model):
   _id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)

@@ -8,9 +8,10 @@
             "name": "server run",
             "type": "python",
             "request": "launch",
+            "sudo": true,
             "program": "run.py",
             "args": [
-                "--bind", "0.0.0.0:4000",
+                "--bind", "0.0.0.0:443",
             ],
         },
 

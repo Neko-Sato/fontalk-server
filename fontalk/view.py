@@ -1,6 +1,8 @@
-from flask_cors import extension
 from . import app
+from . import models
+from . import exceptions
 from flask import request, make_response
+import re
 import json
 
 class general_view:
@@ -20,11 +22,20 @@ class general_view:
     except json.decoder.JSONDecodeError:
       data = {}
     response = make_response()
-    result = self.view(data, *args, **kwargs)
+    try:
+      result = self.view(*args, **kwargs, **data)
+    except TypeError as e:
+      m = re.match(r"^view\(\) missing \d* required positional argument: (.*)$", e.args[0])
+      if m is not None:
+        raise exceptions.InvalidUsage(f'Missing required argument {m.group(1)}.')
+      m = re.match(r"^view\(\) got an unexpected keyword argument (.*)$", e.args[0])
+      if m is not None:
+        raise exceptions.InvalidUsage(f'Unexpected argument {m.group(1)}.')
+      raise e
     response.data = json.dumps({'message': result[0], 'data': result[1]})
     response.mimetype = 'application/json'
     return response
-  def view(self, data, *args, **kwargs):
+  def view(self, *args, **kwargs):
     return 'massage', None
 
 class error_viwe(general_view):
@@ -43,7 +54,12 @@ from . import firebase
 class firebase_view(general_view):
   @firebase.jwt_required
   def as_view(self, *args, **kwargs):
-      kwargs['firebase_id'] = request.jwt_payload["user_id"]
-      return super().as_view(*args, **kwargs)
-  def view(self, data, firebase_id, *args, **kwargs):
-      return super().view(data, *args, **kwargs)
+    firebase_id = request.jwt_payload["user_id"]
+    user = models.User.from_firebase_id(firebase_id)
+    if user is None:
+      user = models.User(firebase_id)
+      models.db.session.add(user)
+      models.db.session.commit(user)
+    return super().as_view(user=user, *args, **kwargs)
+  def view(self, data, user, *args, **kwargs):
+    return super().view(data, user, *args, **kwargs)
