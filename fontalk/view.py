@@ -59,7 +59,7 @@ class firebase_view(general_view):
     if user is None:
       user = models.User(firebase_id)
       models.db.session.add(user)
-      models.db.session.commit(user)
+      models.db.session.commit()
     return super().as_view(user=user, *args, **kwargs)
   def view(self, data, user, *args, **kwargs):
     return super().view(data, user, *args, **kwargs)

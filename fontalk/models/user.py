@@ -46,7 +46,7 @@ class User(db.Model):
     self._name = name
   @property
   def image(self):
-    return self._image if self._image is not None else 'default'
+    return self._image
   @image.setter
   def image(self, image):
     self._image = image
