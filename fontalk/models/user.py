@@ -79,5 +79,11 @@ class Follow(db.Model):
   @property
   def follow(self):
     return self._follow
+  @classmethod
+  def get_follows(cls, user):
+    return cls.query.filter(cls._user == user)
+  @classmethod
+  def get_followers(cls, user):
+    return cls.query.filter(cls._follow == user)
   def __repr__(self):
     return '<follow {}>'.format(self._id)

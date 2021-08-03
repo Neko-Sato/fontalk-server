@@ -1,3 +1,4 @@
+from fontalk.models.user import Follow
 from . import view
 from . import exceptions
 from . import models
@@ -20,7 +21,9 @@ class info(view.firebase_view):
     data = {
       'name': user.name,
       'user_id': user.user_id,
-      'image': list(bytearray(user.image)),
+      'image': list(bytearray(user.image)) if user.image is not None else None,
+      'follows_num' : models.user.Follow.get_follows(user.user_id).count(),
+      'followers_num' : models.user.Follow.get_followers(user.user_id).count()
     }
     return 'Successfully get user information', data
 
