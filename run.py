@@ -50,9 +50,9 @@ if __name__ == '__main__':
       options['port'] = address[1]
     del address
 
-    #import ssl
-    #context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-    #context.load_cert_chain('fullchain.pem', 'privkey.pem')
+    import ssl
+    context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+    context.load_cert_chain('fullchain.pem', 'privkey.pem')
     #options.update(ssl_context=context)
 
     app.run(**options)

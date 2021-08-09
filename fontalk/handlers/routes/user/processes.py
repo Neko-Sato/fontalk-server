@@ -1,41 +1,30 @@
-from fontalk.models.user import Follow
 from . import view
 from . import exceptions
 from . import models
 from . import firebase
 
 class setup(view.firebase_view):
-  def view(self, user, name=None, user_id=None, image=None):
-    if name is not None:
-      user.name = name
-    if user_id is not None:
-      user.user_id = user_id
-      firebase.auth.update_user(user.firebase_id, display_name=user_id)
-    if image is not None:
-      user.image = bytes(bytearray(image))
-    models.db.session.commit()
+  def view(self, user, name=models.nodata, user_id=models.nodata, image=models.nodata):
+    user.update(\
+      name=name, \
+      user_id=user_id, \
+      image = bytes(bytearray(image)) if isinstance(image, list) else image
+    )
     return 'Successfully update user information.', None
 
 class info(view.firebase_view):
   def view(self, user):
-    data = {
-      'name': user.name,
-      'user_id': user.user_id,
-      'image': list(bytearray(user.image)) if user.image is not None else None,
-      'follows_num' : models.user.Follow.get_follows(user.user_id).count(),
-      'followers_num' : models.user.Follow.get_followers(user.user_id).count()
-    }
+    data = user.info()
+    data['image'] = list(bytearray(data['image'])) \
+      if isinstance(data['image'], bytes) else data['image']
     return 'Successfully get user information', data
 
 class delete(view.firebase_view):
   def view(self, user):
-    models.db.session.delete(user)
-    models.db.session.commit()
+    user.delete()
     return 'Successfully delete account', None
 
-class is_available_user_id(view.general_view):
-  def view(self, user_id):
-    if not isinstance(user_id, str):
-      raise exceptions.InvalidUsage('user_id is not string type')
-    isunregistered = models.User.is_available_user_id(user_id)
+class is_available_user_id(view.firebase_view):
+  def view(self, user, user_id):
+    isunregistered = user.is_available_user_id(user_id)
     return 'Available' if isunregistered else 'Not available', None

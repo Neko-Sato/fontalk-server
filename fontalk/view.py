@@ -14,13 +14,13 @@ class general_view:
     cls.app.view_functions[endpoint] = view
     return endpoint
   @classmethod
-  def get_view(cls, *args, **kwargs):
+  def get_view(cls):
     return cls().as_view
   def as_view(self, *args, **kwargs):
     try:
       data = json.loads(request.get_data().decode('utf-8'))
     except json.decoder.JSONDecodeError:
-      data = {}
+      raise exceptions.InvalidUsage('Erorr in json decoding.')
     response = make_response()
     try:
       result = self.view(*args, **kwargs, **data)
@@ -57,9 +57,7 @@ class firebase_view(general_view):
     firebase_id = request.jwt_payload["user_id"]
     user = models.User.from_firebase_id(firebase_id)
     if user is None:
-      user = models.User(firebase_id)
-      models.db.session.add(user)
-      models.db.session.commit()
+      user = models.User.create(firebase_id)
     return super().as_view(user=user, *args, **kwargs)
   def view(self, data, user, *args, **kwargs):
     return super().view(data, user, *args, **kwargs)
