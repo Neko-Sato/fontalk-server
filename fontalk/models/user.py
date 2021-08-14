@@ -1,7 +1,11 @@
-from . import db
-from . import nodata
-from . import exceptions
+from __future__ import annotations
+from typing import Any, Union
 import rstr
+from . import db
+from . import exceptions
+from . import nodata
+from . import follow as _follow
+from . import talk as _talk
 
 class User(db.Model):
   id = db.Column('id', db.Integer, primary_key=True, autoincrement=True)
@@ -13,7 +17,7 @@ class User(db.Model):
   _followed = db.relationship('Follow', foreign_keys='Follow.target', cascade='delete')
   _member = db.relationship('Member', foreign_keys='Member.user', cascade='delete')
   _message = db.relationship('Message', foreign_keys='Message.user', cascade='delete-orphan, delete')
-  def __init__(self, firebase_id, user_id, name=None, image=None):
+  def __init__(self, firebase_id:str, user_id:str, name:str=None, image:bytes=None):
     self.firebase_id = firebase_id
     self.user_id = user_id
     self.name = name
@@ -22,7 +26,7 @@ class User(db.Model):
     return '<User {}>'.format(self.id)
   #//////////////////////////////////////////////////////////////////////////////////////////
   @classmethod
-  def create(cls, firebase_id):
+  def create(cls, firebase_id:str)->User:
     try:
       user_id = rstr.xeger(r"^[a-zA-Z0-9_]{4,16}$")
       user = cls(firebase_id, user_id)
@@ -32,7 +36,7 @@ class User(db.Model):
       db.session.rollback()
       user = cls.create(firebase_id)
     return user
-  def update(self, name=nodata, user_id=nodata, image=nodata):
+  def update(self, name:Union[str, None, nodata]=nodata, user_id:Union[str, None, nodata]=nodata, image:Union[bytes, None, nodata]=nodata):
     if name is not nodata: self.name = name
     if user_id is not nodata: self.user_id = user_id
     if image is not nodata: self.image = image
@@ -42,16 +46,20 @@ class User(db.Model):
     db.session.commit()
   #//////////////////////////////////////////////////////////////////////////////////////////
   @classmethod
-  def from_firebase_id(cls, firebase_id):
+  def get(cls, id:int)->Union[User, None]:
+    return cls.query.get(id)
+  @classmethod
+  def from_firebase_id(cls, firebase_id:str)->Union[User, None]:
     return cls.query.filter(cls.firebase_id == firebase_id).one_or_none()
   @classmethod
-  def from_user_id(cls, user_id):
+  def from_user_id(cls, user_id:str)->Union[User, None]:
     return cls.query.filter(cls.user_id == user_id).one_or_none()
   #//////////////////////////////////////////////////////////////////////////////////////////
-  def info(self):
-    follow = db.aliased(db.Follow)
-    follower = db.aliased(db.Follow)
-    temp = db.session.query(\
+  def info(self)->dict[str, Any]:
+    keys = ('id', 'name', 'user_id', 'image', 'follows_num', 'followers_num')
+    follow = db.aliased(_follow.Follow)
+    follower = db.aliased(_follow.Follow)
+    values = db.session.query(\
       self.__class__.id, \
       self.__class__.name, \
       self.__class__.user_id, \
@@ -61,15 +69,9 @@ class User(db.Model):
     ).filter(self.__class__.id == self.id \
     ).outerjoin(follow, self.__class__.id == follow.user \
     ).outerjoin(follower, self.__class__.id == follower.target \
-    ).group_by(self.__class__.name).one()
-    return {
-      'name': temp[0],
-      'user_id': temp[1],
-      'image': temp[2],
-      'follows_num' : temp[3],
-      'followers_num' : temp[4],
-    }
-  def is_available_user_id(self, user_id):
+    ).group_by(self.__class__.id).one()
+    return dict(zip(keys, values))
+  def is_available_user_id(self, user_id:str)->bool:
     try:
       self.user_id = user_id
       db.session.flush()
@@ -80,11 +82,13 @@ class User(db.Model):
     finally:
       db.session.rollback()
     return temp
-  def follow(self, target):
-    db.Follow.follow(self, target)
-  def unfollow(self, target):
-    db.Follow.unfollow(self, target)
-  def get_follows(self):
-    return db.Follow.get_follows(self)
-  def get_followers(self):
-    return db.Follow.get_followers(self)
+  def follow(self, target:int):
+    _follow.Follow.follow(self.id, target)
+  def unfollow(self, target:int):
+    _follow.Follow.unfollow(self.id, target)
+  def get_follows(self)->list[dict[str, Any]]:
+    return _follow.Follow.get_follows(self.id)
+  def get_followers(self)->list[dict[str, Any]]:
+    return _follow.Follow.get_followers(self.id)
+  def get_talks(self)->list[dict[str, Any]]:
+    return _talk.Member.get_talks(self.id)

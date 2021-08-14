@@ -7,7 +7,7 @@ class nodata:
   pass
 
 #output
-from .user import *
-from .follow import *
-from .talk import *
-from .font import *
+from .user import User
+from .follow import Follow
+from .talk import Talk, Member, Message
+#from .font import *
