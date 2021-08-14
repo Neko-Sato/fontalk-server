@@ -1,6 +1,7 @@
+from flask import Flask
 from flask_firebase_admin import FirebaseAdmin
 
-def config(app):
+def config(app:Flask):
   app.config["FIREBASE_ADMIN_CREDENTIAL"] = \
   FirebaseAdmin.credentials.Certificate("serviceAccountKey.json")
   #app.config['SQLALCHEMY_DATABASE_URI'] = \
